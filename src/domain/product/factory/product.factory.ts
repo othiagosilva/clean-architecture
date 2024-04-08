@@ -11,9 +11,9 @@ export default class ProductFactory {
   ): ProductInterface {
     switch (type) {
       case "a":
-        return new Product(uuid(), name, price);
+        return new Product(uuid(), name, price, type);
       case "b":
-        return new ProductB(uuid(), name, price);
+        return new ProductB(uuid(), name, price, type);
       default:
         throw new Error("Product type not supported");
     }
