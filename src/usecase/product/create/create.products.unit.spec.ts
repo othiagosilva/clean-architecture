@@ -26,6 +26,7 @@ describe("Unit test create product use case", () => {
       id: expect.any(String),
       name: input.name,
       price: input.price,
+      type: input.type,
     });
   });
 });
