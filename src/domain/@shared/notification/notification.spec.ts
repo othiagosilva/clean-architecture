@@ -1,7 +1,7 @@
 import Notification from "./notification";
 
 describe("Unit tests for notifications", () => {
-  it("should create errors", () => {
+  it("should create customer errors", () => {
     const notification = new Notification();
     const error = {
       message: "error message",
@@ -36,13 +36,54 @@ describe("Unit tests for notifications", () => {
     );
   });
 
-  it("should check if notification has at least one error", () => {
+  it("should create product errors", () => {
     const notification = new Notification();
     const error = {
       message: "error message",
+      context: "product",
+    };
+
+    notification.addError(error);
+
+    expect(notification.messages("product")).toBe("product: error message,");
+
+    const error2 = {
+      message: "error message2",
+      context: "product",
+    };
+    notification.addError(error2);
+
+    expect(notification.messages("product")).toBe(
+      "product: error message,product: error message2,"
+    );
+
+    const error3 = {
+      message: "error message3",
       context: "customer",
     };
-    notification.addError(error);
+    notification.addError(error3);
+
+    expect(notification.messages("product")).toBe(
+      "product: error message,product: error message2,"
+    );
+    expect(notification.messages()).toBe(
+      "product: error message,product: error message2,customer: error message3,"
+    );
+  });
+
+  it("should check if notification has at least one error", () => {
+    const notification = new Notification();
+    const errorCustomer = {
+      message: "error message",
+      context: "customer",
+    };
+    notification.addError(errorCustomer);
+
+    const errorProduct = {
+      message: "error message",
+      context: "product",
+    };
+    notification.addError(errorProduct);
 
     expect(notification.hasErrors()).toBe(true);
   });
