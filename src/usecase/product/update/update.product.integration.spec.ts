@@ -27,7 +27,7 @@ describe("Test update product use case", () => {
         const productRepository = new ProductRepository();
         const usecase = new UpdateProductUseCase(productRepository);
 
-        const product = new Product("123", "Product 1", 0, "a");
+        const product = new Product("123", "Product 1", 1, "a");
         await productRepository.create(product);
 
         const input: InputUpdateProductDto = {

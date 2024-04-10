@@ -33,7 +33,7 @@ describe("E2E test for product", () => {
         expect(response.status).toBe(500);
     });
 
-    it("should list all product", async () => {
+    it("should list all products", async () => {
         const response = await request(app)
             .post("/product")
             .send({
@@ -65,5 +65,24 @@ describe("E2E test for product", () => {
         expect(product2.name).toBe("Product 2");
         expect(product2.price).toBe(20);
         expect(product2.type).toBe("a");
+
+        const listResponseXML = await request(app)
+            .get("/product")
+            .set("Accept", "application/xml")
+            .send();
+        expect(listResponseXML.status).toBe(200);
+        expect(listResponseXML.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`);
+        expect(listResponseXML.text).toContain(`<products>`);
+        expect(listResponseXML.text).toContain(`<product>`);
+        expect(listResponseXML.text).toContain(`<name>Product 1</name>`);
+        expect(listResponseXML.text).toContain(`<price>10</price>`);
+        expect(listResponseXML.text).toContain(`<type>a</type>`);
+        expect(listResponseXML.text).toContain(`</product>`);
+        expect(listResponseXML.text).toContain(`<product>`);
+        expect(listResponseXML.text).toContain(`<name>Product 2</name>`);
+        expect(listResponseXML.text).toContain(`<price>20</price>`);
+        expect(listResponseXML.text).toContain(`<type>a</type>`);
+        expect(listResponseXML.text).toContain(`</product>`);
+        expect(listResponseXML.text).toContain(`</products>`);
     });
 })
